@@ -10,6 +10,26 @@ class PlacesController < ApplicationController
   # GET /places/1
   # GET /places/1.json
   def show
+    tab = @place.hashtags.split(',')
+    search = ''
+    tab.each do |hashtag|
+      search += (search.empty? ? '' : ' ') + '#' + hashtag
+    end
+
+    if search and not search.empty? then
+      client = Twitter::REST::Client.new do |config|
+        config.consumer_key    = Rails.application.secrets.twitter_consumer_key
+        config.consumer_secret = Rails.application.secrets.twitter_consumer_secret
+        #config.bearer_token    = Rails.application.secrets.twitter_bearer_token
+      end
+    end
+
+    @tweets = []
+    if client then
+      client.search(search + " -rt", lang: "en").take(5).collect do |tweet|
+        @tweets << {:username => tweet.user.screen_name, :text => tweet.text}
+      end
+    end
   end
 
   # GET /places/new
