@@ -8,7 +8,23 @@
 </head>
 <body>
 
+<div id="wrapper">
+
+<header>
+</header>
+
+<nav>
+	<%= link_to 'Home', { :controller => 'pages', :action => 'home' } %>
+	<%= link_to 'About', { :controller => 'pages', :action => 'about' } %>
+	<%= link_to 'Places', { :controller => 'places', :action => 'index' } %>
+</nav>
+
 <%= yield %>
+
+<footer>
+</footer>
+
+</div>
 
 </body>
 </html>
